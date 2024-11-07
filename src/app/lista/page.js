@@ -1,23 +1,17 @@
-import Image from "next/image";
+"use client";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useContext, useState } from "react";
+import { GranjaContext } from '../context/GranjaContext';
 
 export default function Lista() {
+  const { sortedGranjas, selectedGranja, setSelectedGranja } = useContext(GranjaContext);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const data = [
-    {
-      nome: "Tiago Oro",
-      distancia: 45,
-      tempo: [1, 40],
-      funcionamento: [8, 18],
-      telefone: 61998765432
-    },
-    {
-      nome: "Tiago Oro",
-      distancia: 45,
-      tempo: [1, 40],
-      funcionamento: [8, 18],
-      telefone: 61998765432
-    },
-  ]
+  // Filtra as granjas com base no termo de busca
+  const filteredGranjas = sortedGranjas.filter((granja) =>
+    granja.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -37,30 +31,45 @@ export default function Lista() {
           </div>
         </div>
 
+        {/* Input de busca */}
         <div className="my-4">
-          <input placeholder="Pesquise o nome da granja" className="bg-[#FAFAFA] w-full py-3 rounded-full px-4" />
+          <input
+            placeholder="Pesquise o nome da granja"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-[#FAFAFA] w-full py-3 rounded-full px-4"
+          />
         </div>
 
-        {data.map((granja, index) => (
-          <div key={index} className="flex gap-x-4 mb-3">
-            <div className="w-16 h-16 rounded-full bg-[#D9D9D9] flex justify-center items-center">
-              <p className="font-bold text-xl">{granja.nome[0]}</p>
+        {/* Exibe a lista de granjas ou uma mensagem caso não haja resultados */}
+        {filteredGranjas.length > 0 ? (
+          filteredGranjas.map((granja, index) => (
+            <div key={index} className="flex gap-x-4 mb-3 items-center justify-between" onClick={() => setSelectedGranja(index)}>
+              <Link href="/detalhes" className="flex gap-x-4 mb-3">
+                <div className="w-16 h-16 rounded-full bg-[#D9D9D9] flex justify-center items-center">
+                  <p className="uppercase font-bold text-xl">{granja.nome[0]}</p>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="font-bold">{granja.nome}</p>
+                  <div className="flex gap-x-4 justify-center">
+                    <p className="font-light text-xs">Distância: {granja.distancia}km</p>
+                    <p className="font-light text-xs">Tempo médio: {granja.tempo}</p>
+                  </div>
+                </div>
+              </Link>
+              <Link href="https://www.google.com/maps/place/JBS+F%C3%A1brica+de+Ra%C3%A7%C3%B5es/@-15.9288112,-48.0490207,17z/data=!3m1!4b1!4m6!3m5!1s0x935a2b7dd4bbeb3d:0x76f9bcfdf52100db!8m2!3d-15.9288164!4d-48.0464458!16s%2Fg%2F11c37_8q_7?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D">
+                <Image
+                  src="/send.svg"
+                  width={30}
+                  height={30}
+                  alt="logo"
+                />
+              </Link>
             </div>
-            <div className="flex flex-col justify-center">
-              <p className="font-bold">{granja.nome}</p>
-              <div className="flex gap-x-4 justify-center">
-                <p className="font-light text-xs">Distância: {granja.distancia}km</p>
-                <p className="font-light text-xs">Tempo médio: {granja.tempo[0]}h e {granja.tempo[1]}min</p>
-              </div>
-            </div>
-              <Image
-                src="/send.svg"
-                width={30}
-                height={30}
-                alt="logo"
-              />
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-center text-gray-500">Nenhuma granja correspondente</p>
+        )}
       </div>
     </>
   );
