@@ -1,6 +1,5 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import { GranjaProvider } from './context/GranjaContext';
 
 const minhaFonte = localFont({
   src: [
@@ -29,30 +28,22 @@ const minhaFonte = localFont({
       weight: "600",
       style: "normal",
     },
-
   ],
   variable: "--font-minhaFonte", // nome da variável CSS para a fonte
 });
 
+// A parte do metadata vai dentro do arquivo layout.js (ou arquivo de configuração do Next.js)
 export const metadata = {
   title: "Granjas",
   description: "Sistema de busca de granja",
-
 };
 
 export default function RootLayout({ children }) {
   return (
-    <GranjaProvider>
       <html lang="en">
-        <head>
-          <link rel="icon" href="/ico.svg" sizes="any" />
-          <title>{metadata.title}</title>
-          <meta name="description" content={metadata.description} />
-        </head>
         <body className={minhaFonte.variable}>
           {children}
         </body>
       </html>
-    </GranjaProvider>
   );
 }
