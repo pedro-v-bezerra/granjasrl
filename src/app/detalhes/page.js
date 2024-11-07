@@ -8,6 +8,11 @@ export default function Detalhes() {
 
   const { sortedGranjas, selectedGranja } = useContext(GranjaContext);
 
+  // Verifique se os dados estão disponíveis antes de acessá-los
+  if (!sortedGranjas || !sortedGranjas[selectedGranja]) {
+    return <div>Carregando...</div>; // Exiba uma mensagem de carregamento ou fallback
+  }
+
   return (
     <>
       <div className="px-6 py-8">
@@ -49,7 +54,6 @@ export default function Detalhes() {
             width={20}
             height={20}
             alt="Voltar"
-            
           />
         </Link>
       </div>
