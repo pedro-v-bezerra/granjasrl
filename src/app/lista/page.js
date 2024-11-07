@@ -1,4 +1,4 @@
-import MainLista from "./components/MainDetalhes";
+import MainLista from "./components/MainLista";
 import { GranjaProvider } from "../context/GranjaContext";
 
 export default function Lista() {
