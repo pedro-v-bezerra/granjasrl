@@ -1,101 +1,76 @@
-import Image from "next/image";
+"use client";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useContext, useState } from "react";
+import { GranjaContext } from './context/GranjaContext';
 
-export default function Home() {
+export default function App() {
+  const { sortedGranjas, selectedGranja, setSelectedGranja } = useContext(GranjaContext);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filtra as granjas com base no termo de busca
+  const filteredGranjas = sortedGranjas.filter((granja) =>
+    granja.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <>
+      <div className="px-6 py-8">
+        <div>
+          <h1 className="font-bold text-[#753233] text-xl">
+            Localização de Granjas
+          </h1>
+          <div className="flex gap-x-2">
+            <p>by</p>
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/logo.svg"
+              width={80}
+              height={30}
+              alt="logo"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Input de busca */}
+        <div className="my-4">
+          <input
+            placeholder="Pesquise o nome da granja"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-[#FAFAFA] w-full py-3 rounded-full px-4"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </div>
+
+        {/* Exibe a lista de granjas ou uma mensagem caso não haja resultados */}
+        {filteredGranjas.length > 0 ? (
+          filteredGranjas.map((granja, index) => (
+            <div key={index} className="flex gap-x-4 mb-3 items-center justify-between" onClick={() => setSelectedGranja(index)}>
+              <Link href="/detalhes" className="flex gap-x-4 mb-3">
+                <div className="w-16 h-16 rounded-full bg-[#D9D9D9] flex justify-center items-center">
+                  <p className="uppercase font-bold text-xl">{granja.nome[0]}</p>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="font-bold">{granja.nome}</p>
+                  <div className="flex gap-x-4 justify-center">
+                    <p className="font-light text-xs">Distância: {granja.distancia}km</p>
+                    <p className="font-light text-xs">Tempo médio: {granja.tempo}</p>
+                  </div>
+                </div>
+              </Link>
+              <Link href="https://www.google.com/maps/place/JBS+F%C3%A1brica+de+Ra%C3%A7%C3%B5es/@-15.9288112,-48.0490207,17z/data=!3m1!4b1!4m6!3m5!1s0x935a2b7dd4bbeb3d:0x76f9bcfdf52100db!8m2!3d-15.9288164!4d-48.0464458!16s%2Fg%2F11c37_8q_7?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D">
+                <Image
+                  src="/send.svg"
+                  width={30}
+                  height={30}
+                  alt="logo"
+                />
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">Nenhuma granja correspondente</p>
+        )}
+      </div>
+    </>
   );
 }
