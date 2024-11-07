@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from '/firebase.js'
+import { db } from "../../../firebase";
 
 export const GranjaContext = createContext();
 
