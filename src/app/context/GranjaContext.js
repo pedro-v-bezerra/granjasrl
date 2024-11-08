@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+// import * as XLSX from "xlsx"; // Altere xlsx para XLSX
+
 
 export const GranjaContext = createContext();
 
