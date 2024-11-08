@@ -12,13 +12,13 @@ const verificarValor = (valor) => {
 
 
 export default function Detalhes() {
-  
+
   const { sortedGranjas, idSelectedGranja, setSelectedDetalhes } = useContext(GranjaContext);
-  
+
   const selectedGranja = sortedGranjas.find(granja => granja.id === idSelectedGranja);
-  
+
   const verificaFuncionamento = (abertura, fechamento) => {
-    if(abertura && fechamento){
+    if (abertura && fechamento) {
       return `das ${abertura} às ${fechamento}`
     } else {
       return '-'
@@ -31,47 +31,49 @@ export default function Detalhes() {
 
   return (
     <>
-      <div className="px-6 py-8">
+      <div className="px-6 md:px-40 py-8">
         <div onClick={() => setSelectedDetalhes(false)}>
           <Image
             src="/back.svg"
             width={30}
             height={30}
             alt="Voltar"
-            className="mb-4"
+            className="mb-4 cursor-pointer"
           />
         </div>
         <div className="flex items-center gap-x-6">
           <p className="uppercase w-24 h-24 rounded-full text-5xl font-bold bg-[#D9D9D9] flex justify-center items-center">{selectedGranja.nome[0]}</p>
-          <p className="text-xl font-bold">{verificarValor(selectedGranja.nome)}</p>
+          <p className="text-xl md:text-3xl font-bold">{verificarValor(selectedGranja.nome)}</p>
         </div>
         <div>
           <div className="flex justify-between mt-6">
-            <p className="font-medium">Distância:</p>
-            <p className="font-light">{verificarValor(selectedGranja.distancia)}</p>
+            <p className="font-medium text-base md:text-xl">Distância:</p>
+            <p className="font-light text-base md:text-xl">{verificarValor(selectedGranja.distancia)}</p>
           </div>
           <div className="flex justify-between mt-6">
-            <p className="font-medium">Tempo médio:</p>
-            <p className="font-light">{verificarValor(selectedGranja.tempo)}</p>
+            <p className="font-medium text-base md:text-xl">Tempo médio:</p>
+            <p className="font-light text-base md:text-xl">{verificarValor(selectedGranja.tempo)}</p>
           </div>
           <div className="flex justify-between items-center mt-6">
-            <p className="font-medium">Horário de<br/>funcionamento:</p>
-            <p className="font-light">{verificaFuncionamento(selectedGranja.abertura, selectedGranja.fechamento)}</p>
+            <p className="font-medium text-base md:text-xl">Horário de<br />funcionamento:</p>
+            <p className="font-light text-base md:text-xl">{verificaFuncionamento(selectedGranja.abertura, selectedGranja.fechamento)}</p>
           </div>
           <div className="flex justify-between mt-6">
-            <p className="font-medium">Telefone do granjeiro:</p>
-            <p className="font-light">{verificarValor(selectedGranja.telefone)}</p>
+            <p className="font-medium text-base md:text-xl">Telefone do granjeiro:</p>
+            <p className="font-light text-base md:text-xl">{verificarValor(selectedGranja.telefone)}</p>
           </div>
         </div>
-        <Link href={selectedGranja.localizacao} className="flex justify-center bg-[#753233] w-full py-2 rounded-xl mt-10">
-          <p className="text-white font-bold">LOCALIZAÇÃO</p>
-          <Image
-            src="/location.svg"
-            width={20}
-            height={20}
-            alt="Voltar"
-          />
-        </Link>
+        <div className="md:flex justify-center">
+          <Link href={selectedGranja.localizacao.replace(/"/g, '')} className="flex justify-center bg-[#753233] py-2 md:py-3 px-20 rounded-xl mt-10">
+            <p className="text-white font-bold">LOCALIZAÇÃO</p>
+            <Image
+              src="/location.svg"
+              width={20}
+              height={20}
+              alt="Voltar"
+            />
+          </Link>
+        </div>
       </div>
     </>
   );
