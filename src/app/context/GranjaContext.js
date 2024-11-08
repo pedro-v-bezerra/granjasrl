@@ -9,6 +9,9 @@ export const GranjaContext = createContext();
 export const GranjaProvider = ({ children }) => {
   const [granjas, setGranjas] = useState([]);
   const [idSelectedGranja, setIdSelectedGranja] = useState(0);
+  const [selectedAdd, setSelectedAdd] = useState(false)
+  const [selectedEdit, setSelectedEdit] = useState(false)
+  const [selectedDetalhes, setSelectedDetalhes] = useState(false)
 
   useEffect(() => {
     const fetchGranjas = async () => {
@@ -65,45 +68,72 @@ export const GranjaProvider = ({ children }) => {
   const validarDados = (nome, distancia, tempo, abertura, fechamento, telefone, localizacao) => {
     const regexHora = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
     const regexTelefone = /^\(\d{2}\) \d{1} \d{4}-\d{4}$/;
-
+    
     if (!nome.trim()) {
       return "O nome da granja é obrigatório.";
     }
-
+  
     if (distancia && distancia <= 0) {
       return "A distância deve ser um número positivo.";
     }
-
-    if (tempo && !regexHora.test(tempo)) {
-      return "Insira um tempo médio de chegada válido";
+  
+    // Verifica o tempo (considerando a função de validação adaptada para o tempo)
+    if (tempo) {
+      // Valida se o tempo está no formato correto
+      const regexTempo = /^\d+h e \d{1,2}min$/;
+      if (!regexTempo.test(tempo)) {
+        return "Formato de tempo inválido. Use 'Xh e Xmin'.";
+      }
+  
+      // Extraímos horas e minutos do formato "Xh e Xmin"
+      const match = tempo.match(/^(\d+)h e (\d{1,2})min$/);
+      if (match) {
+        const hours = parseInt(match[1], 10);
+        const minutes = parseInt(match[2], 10);
+  
+        // Valida as horas e minutos
+        if (hours > 99) {
+          return "O número de horas não pode ser maior que 99.";
+        }
+        if (minutes > 59) {
+          return "O número de minutos não pode ser maior que 59.";
+        }
+        // Verifica se o tempo é maior ou igual a 50 minutos
+        if (hours === 0 && minutes < 50) {
+          return "Insira um tempo médio de chegada válido (mínimo de 50 minutos).";
+        }
+      }
     }
-
+  
+    // Valida horários de abertura e fechamento
     if (abertura && !regexHora.test(abertura)) {
       return "Insira um horário de abertura válido";
     }
-
+  
     if (fechamento && !regexHora.test(fechamento)) {
       return "Insira um horário de fechamento válido";
     }
-
+  
     if (fechamento && !abertura) {
       return "Insira um horário de abertura";
     }
+  
     if (!fechamento && abertura) {
       return "Insira um horário de fechamento";
     }
-
+  
+    // Valida o telefone
     if (telefone && !regexTelefone.test(telefone)) {
       return "O telefone deve estar no formato (XX) 9 XXXX-XXXX.";
     }
-
+  
     if (!localizacao.trim()) {
       return "O link de localização é obrigatório.";
     }
-
+  
     return true;
   };
-
+  
   console.log(idSelectedGranja)
 
   return (
@@ -114,7 +144,13 @@ export const GranjaProvider = ({ children }) => {
       setIdSelectedGranja, 
       addGranja, 
       updateGranja, 
-      deleteGranja 
+      deleteGranja,
+      selectedAdd,
+      selectedEdit,
+      selectedDetalhes,
+      setSelectedAdd,
+      setSelectedEdit,
+      setSelectedDetalhes
     }}>
       {children}
     </GranjaContext.Provider>

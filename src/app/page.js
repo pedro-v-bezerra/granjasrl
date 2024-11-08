@@ -1,12 +1,12 @@
 "use client";
-import Lista from "./lista/page";
+import Main from './components/Main';
 import { GranjaProvider } from './context/GranjaContext';
 export default function App() {
 
   return (
     <>
       <GranjaProvider>
-        <Lista />
+        <Main />
       </GranjaProvider>
     </>
   );
