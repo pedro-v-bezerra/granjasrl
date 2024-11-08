@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+import * as XLSX from "xlsx"; // Altere xlsx para XLSX
+
 
 export const GranjaContext = createContext();
 
@@ -68,15 +70,15 @@ export const GranjaProvider = ({ children }) => {
   const validarDados = (nome, distancia, tempo, abertura, fechamento, telefone, localizacao) => {
     const regexHora = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
     const regexTelefone = /^\(\d{2}\) \d{1} \d{4}-\d{4}$/;
-    
+
     if (!nome.trim()) {
       return "O nome da granja é obrigatório.";
     }
-  
+
     if (distancia && distancia <= 0) {
       return "A distância deve ser um número positivo.";
     }
-  
+
     // Verifica o tempo (considerando a função de validação adaptada para o tempo)
     if (tempo) {
       // Valida se o tempo está no formato correto
@@ -84,13 +86,13 @@ export const GranjaProvider = ({ children }) => {
       if (!regexTempo.test(tempo)) {
         return "Formato de tempo inválido. Use 'Xh e Xmin'.";
       }
-  
+
       // Extraímos horas e minutos do formato "Xh e Xmin"
       const match = tempo.match(/^(\d+)h e (\d{1,2})min$/);
       if (match) {
         const hours = parseInt(match[1], 10);
         const minutes = parseInt(match[2], 10);
-  
+
         // Valida as horas e minutos
         if (hours > 99) {
           return "O número de horas não pode ser maior que 99.";
@@ -104,46 +106,82 @@ export const GranjaProvider = ({ children }) => {
         }
       }
     }
-  
+
     // Valida horários de abertura e fechamento
     if (abertura && !regexHora.test(abertura)) {
       return "Insira um horário de abertura válido";
     }
-  
+
     if (fechamento && !regexHora.test(fechamento)) {
       return "Insira um horário de fechamento válido";
     }
-  
+
     if (fechamento && !abertura) {
       return "Insira um horário de abertura";
     }
-  
+
     if (!fechamento && abertura) {
       return "Insira um horário de fechamento";
     }
-  
+
     // Valida o telefone
     if (telefone && !regexTelefone.test(telefone)) {
       return "O telefone deve estar no formato (XX) 9 XXXX-XXXX.";
     }
-  
+
     if (!localizacao.trim()) {
       return "O link de localização é obrigatório.";
     }
-  
+
     return true;
   };
-  
+
   console.log(idSelectedGranja)
 
+  // useEffect(() => {
+  //   const loadExcelFile = async () => {
+  //     try {
+  //       const response = await fetch("/importada.xlsx");
+  //       const arrayBuffer = await response.arrayBuffer();
+  //       const workbook = XLSX.read(arrayBuffer, { type: "array" });
+  
+  //       const sheetName = workbook.SheetNames[0];
+  //       const worksheet = workbook.Sheets[sheetName];
+  //       const jsonData = XLSX.utils.sheet_to_json(worksheet);
+  
+  //       const granjasFromExcel = jsonData.map((row) => ({
+  //         nome: row["Nome da Granja"] || "",
+  //         localizacao: row["Localização"] || "",
+  //         distancia: row["Distância"] || '',
+  //         tempo: row["Tempo médio"] || "",
+  //         funcionamento: row["Funcionamento"] || "",
+  //         telefone: row["Telefone"] || ""
+  //       }));
+  
+  //       // Adiciona cada granja ao Firestore
+  //       // for (const granja of granjasFromExcel) {
+  //       //   await addDoc(collection(db, "granjas"), granja);
+  //       // }
+  
+  //       console.log("Dados importados com sucesso para o Firebase!");
+  
+  //     } catch (error) {
+  //       console.error("Erro ao carregar e processar o arquivo Excel:", error);
+  //     }
+  //   };
+  
+  //   loadExcelFile();
+  // }, []);
+  
+
   return (
-    <GranjaContext.Provider value={{ 
-      validarDados, 
-      sortedGranjas, 
-      idSelectedGranja, 
-      setIdSelectedGranja, 
-      addGranja, 
-      updateGranja, 
+    <GranjaContext.Provider value={{
+      validarDados,
+      sortedGranjas,
+      idSelectedGranja,
+      setIdSelectedGranja,
+      addGranja,
+      updateGranja,
       deleteGranja,
       selectedAdd,
       selectedEdit,
