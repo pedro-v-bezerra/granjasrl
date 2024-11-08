@@ -64,9 +64,9 @@ export default function Detalhes() {
           </div>
         </div>
         <div className="md:flex justify-center">
-          <Link href={selectedGranja.localizacao.replace(/"/g, '')} className="flex gap-x-4 justify-center bg-[#753233] py-2 md:py-3 px-20 rounded-xl mt-10">
+          <Link href={selectedGranja.localizacao.replace(/"/g, '')} target="_blank" rel="noopener noreferrer" className="flex gap-x-4 justify-center bg-[#753233] py-2 md:py-3 px-20 rounded-xl mt-10">
             <p className="text-white font-bold">LOCALIZAÇÃO</p>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="w-5 h-5 md:w-5 md:h-5 hover:opacity-50 cursor-pointer bi bi-pin-map" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="w-5 h-5 md:w-5 md:h-5 bi bi-pin-map" viewBox="0 0 16 16">
               <path fillRule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z" />
               <path fillRule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
             </svg>
