@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { GranjaContext } from '@/app/context/GranjaContext';
 
 const verificarValor = (valor) => {
@@ -10,7 +10,7 @@ const verificarValor = (valor) => {
 
 
 export default function Lista() {
-  const { sortedGranjas, setIdSelectedGranja, setSelectedAdd, setSelectedEdit, setSelectedDetalhes } = useContext(GranjaContext);
+  const { sortedGranjas, setIdSelectedGranja, setSelectedAdd, setSelectedEdit, setSelectedDetalhes, idSelectedGranja } = useContext(GranjaContext);
   const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -18,6 +18,18 @@ export default function Lista() {
   const filteredGranjas = sortedGranjas.filter((granja) =>
     granja.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleAfterEdit = () => {
+    const element = document.getElementById(`granja-${idSelectedGranja}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
+  };
+
+  useEffect(() => {
+    handleAfterEdit();
+  }, [idSelectedGranja, sortedGranjas]);
+
 
   return (
     <>
@@ -57,7 +69,7 @@ export default function Lista() {
         {/* Exibe a lista de granjas ou uma mensagem caso não haja resultados */}
         {filteredGranjas.length > 0 ? (
           filteredGranjas.map((granja, index) => (
-            <div key={index} className="flex gap-x-4 mb-3 items-center justify-between" onClick={() => setIdSelectedGranja(granja.id)}>
+            <div key={index} id={`granja-${granja.id}`} className="flex gap-x-4 mb-3 items-center justify-between" onClick={() => setIdSelectedGranja(granja.id)}>
               <div onClick={() => setSelectedDetalhes(true)} className="flex gap-x-4 mb-3 w-full hover:opacity-50 cursor-pointer">
                 <div className="w-12 h-12 min-w-12 min-h-12 md:w-24 md:h-24 md:min-w-24 md:min-h-24 rounded-full bg-[#D9D9D9] flex justify-center items-center">
                   <p className="uppercase font-bold text-xl md:text-3xl">{granja.nome[0]}</p>

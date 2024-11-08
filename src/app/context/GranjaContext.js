@@ -14,6 +14,7 @@ export const GranjaProvider = ({ children }) => {
   const [selectedAdd, setSelectedAdd] = useState(false)
   const [selectedEdit, setSelectedEdit] = useState(false)
   const [selectedDetalhes, setSelectedDetalhes] = useState(false)
+  
 
   useEffect(() => {
     const fetchGranjas = async () => {
@@ -136,7 +137,6 @@ export const GranjaProvider = ({ children }) => {
     return true;
   };
 
-  console.log(idSelectedGranja)
 
   // useEffect(() => {
   //   const loadExcelFile = async () => {
@@ -173,7 +173,8 @@ export const GranjaProvider = ({ children }) => {
   //   loadExcelFile();
   // }, []);
   
-
+  
+  
   return (
     <GranjaContext.Provider value={{
       validarDados,
