@@ -10,7 +10,7 @@ const verificarValor = (valor) => {
 
 
 export default function Lista() {
-  const { sortedGranjas, setIdSelectedGranja, setSelectedAdd, setSelectedEdit, setSelectedDetalhes, idSelectedGranja, setSelectedLogin, user } = useContext(GranjaContext);
+  const { sortedGranjas, setIdSelectedGranja, setSelectedAdd, setSelectedEdit, setSelectedDetalhes, idSelectedGranja, setSelectedLogin, user, setUser } = useContext(GranjaContext);
   const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -31,6 +31,14 @@ export default function Lista() {
   }, [idSelectedGranja, sortedGranjas]);
 
 
+  const handleLogout = () => {
+    const confirmDelete = window.confirm("Tem certeza de que deseja sair?");
+
+    if (confirmDelete) {
+      setUser(null)
+    }
+  };
+
   return (
     <>
       <div className="px-6 md:px-40 py-8">
@@ -48,20 +56,28 @@ export default function Lista() {
             </div>
           </div>
           {user ? (
-          <div onClick={() => setSelectedAdd(true)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-10 h-10 md:w-12 md:h-12 hover:opacity-50 cursor-pointer bi bi-plus-square" viewBox="0 0 16 16">
-              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-            </svg>
-          </div>
+            <div className='flex gap-x-1 md:gap-x-8 items-center'>
+              <div onClick={() => setSelectedAdd(true)}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-6 h-6 md:w-12 md:h-12 hover:opacity-50 cursor-pointer bi bi-plus-square" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+              </div>
+              <div onClick={() => handleLogout()}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-8 h-8 md:w-16 md:h-16 hover:opacity-50 cursor-pointer bi bi-plus-square" viewBox="0 0 16 16">
+                  <path fillRule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                  <path fillRule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                </svg>
+              </div>
+            </div>
           ) : (
-          <div className='flex items-center gap-x-2' onClick={() => {setSelectedLogin(true)}}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-10 h-10 md:w-16 md:h-16 hover:opacity-50 cursor-pointer bi bi-plus-square" viewBox="0 0 16 16">
-              <path fillRule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z" />
-              <path fillRule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-            </svg>
-          </div>
-          ) }
+            <div className='flex items-center gap-x-2' onClick={() => { setSelectedLogin('true') }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-10 h-10 md:w-16 md:h-16 hover:opacity-50 cursor-pointer bi bi-plus-square" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z" />
+                <path fillRule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+              </svg>
+            </div>
+          )}
         </div>
 
         {/* Input de busca */}
@@ -71,47 +87,50 @@ export default function Lista() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-[#FAFAFA] w-full py-3 md:py-4 rounded-full px-4"
+            
           />
         </div>
 
         {/* Exibe a lista de granjas ou uma mensagem caso não haja resultados */}
-        {filteredGranjas.length > 0 ? (
-          filteredGranjas.map((granja, index) => (
-            <div key={index} id={`granja-${granja.id}`} className="flex gap-x-4 mb-3 items-center justify-between" onClick={() => setIdSelectedGranja(granja.id)}>
-              <div onClick={() => setSelectedDetalhes(true)} className="flex gap-x-4 mb-3 w-full hover:opacity-50 cursor-pointer">
-                <div className="w-12 h-12 min-w-12 min-h-12 md:w-24 md:h-24 md:min-w-24 md:min-h-24 rounded-full bg-[#D9D9D9] flex justify-center items-center">
-                  <p className="uppercase font-bold text-xl md:text-3xl">{granja.nome[0]}</p>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="font-bold text-base md:text-2xl">{granja.nome}</p>
-                  <div className="flex gap-x-4 justify-start">
-                    <p className="font-light text-xs md:text-lg">Distância: {verificarValor(granja.distancia)}</p>
-                    <p className="hidden md:block font-light text-xs md:text-lg">Tempo médio: {verificarValor(granja.tempo)}</p>
+        <div className='overflow-y-auto max-h-[65vh] scroll-hide'>
+          {filteredGranjas.length > 0 ? (
+            filteredGranjas.map((granja, index) => (
+              <div key={index} id={`granja-${granja.id}`} className="flex gap-x-4 mb-3 items-center justify-between " onClick={() => setIdSelectedGranja(granja.id)}>
+                <div onClick={() => setSelectedDetalhes(true)} className="flex gap-x-4 mb-3 w-full hover:opacity-50 cursor-pointer">
+                  <div className="w-12 h-12 min-w-12 min-h-12 md:w-24 md:h-24 md:min-w-24 md:min-h-24 rounded-full bg-[#D9D9D9] flex justify-center items-center">
+                    <p className="uppercase font-bold text-xl md:text-3xl">{granja.nome[0]}</p>
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <p className="font-bold text-base md:text-2xl">{granja.nome}</p>
+                    <div className="flex gap-x-4 justify-start">
+                      <p className="font-light text-xs md:text-lg">Distância: {verificarValor(granja.distancia)}</p>
+                      <p className="hidden md:block font-light text-xs md:text-lg">Tempo médio: {verificarValor(granja.tempo)}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='flex gap-x-4 justify-center items-center'>
+                <div className='flex gap-x-4 justify-center items-center'>
 
-                <Link href={granja.localizacao.replace(/"/g, '')} target="_blank" rel="noopener noreferrer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-6 h-6 md:w-10 md:h-10 hover:opacity-50 cursor-pointer bi bi-pin-map" viewBox="0 0 16 16">
-                    <path fillRule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z" />
-                    <path fillRule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
-                  </svg>
-                </Link>
-                {user ? (
-                <div className="hover:opacity-50 cursor-pointer" onClick={() => { setSelectedEdit(true) }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" fill="#753233" className="w-7 h-7 md:w-12 md:h-12 bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                    <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                  </svg>
+                  <Link href={granja.localizacao.replace(/"/g, '')} target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#753233" className="w-6 h-6 md:w-10 md:h-10 hover:opacity-50 cursor-pointer bi bi-pin-map" viewBox="0 0 16 16">
+                      <path fillRule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z" />
+                      <path fillRule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
+                    </svg>
+                  </Link>
+                  {user ? (
+                    <div className="hover:opacity-50 cursor-pointer" onClick={() => { setSelectedEdit(true) }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" fill="#753233" className="w-7 h-7 md:w-12 md:h-12 bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                      </svg>
+                    </div>
+                  ) : ''}
                 </div>
-                ) : ''}
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">Nenhuma granja correspondente</p>
-        )}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Nenhuma granja correspondente</p>
+          )}
+        </div>
       </div>
     </>
   );

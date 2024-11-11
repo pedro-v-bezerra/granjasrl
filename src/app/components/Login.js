@@ -17,7 +17,7 @@ export default function Login() {
 
   return (
     <div className="h-[100vh] px-4 flex flex-col justify-center items-center gap-y-8 md:px-20">
-      <div className="flex justify-start w-full md:w-[60vh]" onClick={() => setSelectedLogin(false)}>
+      <div className="flex justify-start w-full md:w-[60vh]" onClick={() => setSelectedLogin('')}>
         <Image src="/back.svg" width={30} height={30} alt="Adicionar" className="cursor-pointer mb-2 md:w-12 md:h-12" />
       </div>
       <svg width="150" height="30" viewBox="0 0 55 10" fill="none" xmlns="http://www.w3.org/2000/svg">

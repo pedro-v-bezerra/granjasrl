@@ -9,3 +9,13 @@
 body {
   font-family: var(--font-minhaFonte);
 }
+
+/* Esconder barra de rolagem em navegadores baseados no WebKit (como Chrome e Safari) */
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Esconder barra de rolagem no Firefox */
+.scroll-hide {
+  scrollbar-width: none; /* Para o Firefox */
+}
