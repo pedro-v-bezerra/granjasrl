@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { db, auth } from "../../../firebase";
 // import * as XLSX from "xlsx"; // Altere xlsx para XLSX
 
 
@@ -11,10 +12,14 @@ export const GranjaContext = createContext();
 export const GranjaProvider = ({ children }) => {
   const [granjas, setGranjas] = useState([]);
   const [idSelectedGranja, setIdSelectedGranja] = useState(0);
-  const [selectedAdd, setSelectedAdd] = useState(false)
-  const [selectedEdit, setSelectedEdit] = useState(false)
-  const [selectedDetalhes, setSelectedDetalhes] = useState(false)
-  
+  const [selectedAdd, setSelectedAdd] = useState(false);
+  const [selectedEdit, setSelectedEdit] = useState(false);
+  const [selectedDetalhes, setSelectedDetalhes] = useState(false);
+  const [selectedLogin, setSelectedLogin] = useState(false);
+  const [user, setUser] = useState(null); 
+  const [error, setError] = useState(null); 
+
+
 
   useEffect(() => {
     const fetchGranjas = async () => {
@@ -29,6 +34,18 @@ export const GranjaProvider = ({ children }) => {
 
     fetchGranjas();
   }, []);
+
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setUser(userCredential.user); // Armazena o usuário autenticado
+      setError(null); // Limpa erros caso o login seja bem-sucedido
+      setSelectedLogin(false)
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setError("Erro ao fazer login. Verifique suas credenciais.");
+    }
+  };
 
   const addGranja = async (novaGranja) => {
     try {
@@ -144,11 +161,11 @@ export const GranjaProvider = ({ children }) => {
   //       const response = await fetch("/importada.xlsx");
   //       const arrayBuffer = await response.arrayBuffer();
   //       const workbook = XLSX.read(arrayBuffer, { type: "array" });
-  
+
   //       const sheetName = workbook.SheetNames[0];
   //       const worksheet = workbook.Sheets[sheetName];
   //       const jsonData = XLSX.utils.sheet_to_json(worksheet);
-  
+
   //       const granjasFromExcel = jsonData.map((row) => ({
   //         nome: row["Nome da Granja"] || "",
   //         localizacao: row["Localização"] || "",
@@ -157,24 +174,24 @@ export const GranjaProvider = ({ children }) => {
   //         funcionamento: row["Funcionamento"] || "",
   //         telefone: row["Telefone"] || ""
   //       }));
-  
+
   //       // Adiciona cada granja ao Firestore
   //       // for (const granja of granjasFromExcel) {
   //       //   await addDoc(collection(db, "granjas"), granja);
   //       // }
-  
+
   //       console.log("Dados importados com sucesso para o Firebase!");
-  
+
   //     } catch (error) {
   //       console.error("Erro ao carregar e processar o arquivo Excel:", error);
   //     }
   //   };
-  
+
   //   loadExcelFile();
   // }, []);
-  
-  
-  
+
+
+
   return (
     <GranjaContext.Provider value={{
       validarDados,
@@ -189,7 +206,12 @@ export const GranjaProvider = ({ children }) => {
       selectedDetalhes,
       setSelectedAdd,
       setSelectedEdit,
-      setSelectedDetalhes
+      setSelectedDetalhes,
+      login,
+      user,
+      error,
+      selectedLogin,
+      setSelectedLogin
     }}>
       {children}
     </GranjaContext.Provider>
